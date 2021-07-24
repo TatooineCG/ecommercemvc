@@ -1,0 +1,19 @@
+.fluid-container-header .container-header {
+  text-align: center;
+}
+
+.fluid-container-header .container-header nav a {
+  color: blue;
+}
+
+.fluid-container-header .container-header .col-header {
+  float: right;
+}
+
+.fluid-container-header .container-header .col-header .btn-sair {
+  display: inline-flex;
+}
+
+.fluid-container-header .container-header .col-header .bem-vindo {
+  display: inline;
+}

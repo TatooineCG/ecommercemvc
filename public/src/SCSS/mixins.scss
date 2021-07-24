@@ -1,0 +1,162 @@
+// =============================================================================
+// Variaveis
+// =============================================================================
+$tamanhoRaiz: 20;
+$fontPadrao: 'Inter-Regular',
+'sans-serif';
+$fontDislexia: 'OpenDyslexic-Regular';
+
+
+
+
+$BTN2hover : #338944;
+$BTN2focus : #176326;
+
+
+$btnMaisNoticias:#E0E0E0;
+
+$corPadraoFonte: #212529;
+$corFonte : #2d2d2d;
+$corSecundFonte :#495057;
+$coralternativoFonte :#656d75;
+$corInternaFonte : #343a40;
+$corhr : #dee2e6;
+$CorDropdown:#027834;
+$CorAmarelo:#ffeb3b;
+
+$corGaleriaVideos:#115b9b;
+
+
+$BackgroundVideosGaleria:#115b9b;
+$BackgroundVideosGaleria2:#1779ce;
+
+// =============================================================================
+// String Replace
+// =============================================================================
+
+@function str-replace($string, $search, $replace: "") {
+	$index: str-index($string, $search);
+
+	@if $index {
+		@return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+	}
+
+	@return $string;
+}
+
+// =============================================================================
+// Font Face
+// =============================================================================
+@mixin font-face($name, $weight: null, $style: null, $exts: woff2 woff ttf) {
+    $src: null;
+    $extmods: ( eot: "?", svg: "#" + str-replace($name, " ", "_"));
+    $formats: ( otf: "opentype", ttf: "truetype");
+    @each $ext in $exts {
+        $extmod: if(map-has-key($extmods, $ext), $ext + map-get($extmods, $ext), $ext);
+        $format: if(map-has-key($formats, $ext), map-get($formats, $ext), $ext);
+        $src: append($src, url(quote("../fonts/" + $name + "." + $extmod)) format(quote($format)), comma);
+    }
+    @font-face {
+        font-family: quote($name);
+        font-style: $style;
+        font-weight: $weight;
+        font-display: swap;
+        src: $src;
+    }
+}
+
+// =============================================================================
+// Rem Converter
+// =============================================================================
+@function get-rem($value) {
+	@if $value == 0 {
+		@return 0;
+	}
+	@return ($value / $tamanhoRaiz)+rem;
+}
+
+$sides: (top, right, bottom, left);
+@mixin rem($property, $values) {
+	$len: length($values);
+	@if $len == 1 {
+		#{$property}: get-rem($values);
+	} @else if $len == 2 {
+		$times: 1;
+		@each $side in $sides {
+			@if ($times % 2) != 0  {
+				#{$property}-#{$side}: get-rem(nth($values, 1));
+			}@else{
+				#{$property}-#{$side}: get-rem(nth($values, 2));
+			}
+			$times: $times + 1;
+		}
+	} @else {
+		$times: 1;
+		@each $side in $sides {
+			#{$property}-#{$side}: get-rem(nth($values, $times));
+			$times: $times + 1;
+		}
+	}
+}
+
+// =============================================================================
+// Transition
+// =============================================================================
+@mixin transition($sec) {
+	-webkit-transition: $sec;
+	-o-transition: $sec;
+	transition: $sec;
+}
+// =============================================================================
+// Variation
+// =============================================================================
+@mixin variation($property,
+$value) {
+    -webkit-#{$property}: $value;
+    -moz-#{$property}: $value;
+    -ms-#{$property}: $value;
+    -o-#{$property}: $value;
+    #{$property}: $value;
+}
+
+// =============================================================================
+// Placeholder
+// =============================================================================
+@mixin placeholder {
+    &::-webkit-input-placeholder {
+        @content;
+    }
+    &:-moz-placeholder {
+        @content;
+    }
+    &::-moz-placeholder {
+        @content;
+    }
+    &:-ms-input-placeholder {
+        @content;
+    }
+    &::placeholder {
+        @content;
+    }
+}
+
+// =============================================================================
+// Contrast
+// =============================================================================
+@mixin text-contrast($n) {
+    $color-brightness: round((red($n) * 299) + (green($n) * 587) + (blue($n) * 114) / 1000);
+    $light-color: round((red(#ffffff) * 299) + (green(#ffffff) * 587) + (blue(#ffffff) * 114) / 1000);
+    @if abs($color-brightness) < ($light-color/2) {
+        color: #FFF !important;
+    }
+    @else {
+        color: #343a40 !important;
+    }
+}
+
+// =============================================================================
+// Font-Family
+// =============================================================================
+@mixin font-family($font) {
+    font-family: $font, 'sans-serif';
+}

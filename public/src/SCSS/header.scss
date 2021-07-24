@@ -1,0 +1,20 @@
+@import 'mixins';
+
+
+.fluid-container-header{  
+    .container-header{
+        text-align: center;
+        nav a{
+        color:blue;
+        }
+        .col-header{
+            float:right;
+            .btn-sair{
+            display:inline-flex;
+            }
+            .bem-vindo{
+                display:inline;
+            }
+        }
+    }
+}
